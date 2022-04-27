@@ -51,3 +51,16 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+tasks.create("helloWorld") {
+	doLast {
+		println("Hello World!")
+	}
+}
+
+tasks.create("byeWorld") {
+	doLast {
+		println("Bye World..")
+	}
+}
+
