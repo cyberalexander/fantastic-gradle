@@ -86,3 +86,28 @@ tasks.register("counter") {
         }
     }
 }
+
+/**
+ * Generate 3 tasks: [task_0, task_1, task_2]
+ */
+repeat(3) {counter ->
+	tasks.register("task_$counter") {
+		doLast {
+			println("I'm task number $counter")
+		}
+	}
+}
+
+/**
+ * Configure the task_0 to be executed after task_1 and task_2.
+ *
+ * Run {@sample gradle task_0}
+ *
+ * Expected to be printed in terminal:
+ * I'm task number 1
+ * I'm task number 2
+ * I'm task number 0
+ */
+tasks.named("task_0") {
+	dependsOn("task_1", "task_2")
+}
