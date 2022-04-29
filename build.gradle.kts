@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.util.capitalizeDecapitalize.toUpperCaseAsciiOnly
 
 plugins {
 	id("org.springframework.boot") version "2.6.7"
@@ -52,15 +53,36 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
-tasks.create("helloWorld") {
+/**
+ * The task dedicated to print "Hello World!" phrase in console after successful execution.
+ */
+tasks.register("hello") {
+    dependsOn("build")
 	doLast {
 		println("Hello World!")
 	}
 }
 
-tasks.create("byeWorld") {
+/**
+ * The task retrieves system property user.name and converts the value to upper case.
+ */
+tasks.register("upper") {
+    dependsOn("hello")
 	doLast {
-		println("Bye World..")
+		val name = System.getProperty("user.name")
+        println("name: $name")
+        println("upper: ${name.toUpperCaseAsciiOnly()}")
 	}
 }
 
+/**
+ * The tasks prints the numbers in sequetial order in a row till the limit configured in 'repeat' input is reached.
+ */
+tasks.register("counter") {
+    dependsOn("upper")
+    doLast {
+        repeat(5) {
+            print("$it ")
+        }
+    }
+}
