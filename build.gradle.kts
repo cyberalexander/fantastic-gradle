@@ -111,3 +111,15 @@ repeat(3) {counter ->
 tasks.named("task_0") {
 	dependsOn("task_1", "task_2")
 }
+
+/**
+ * Custom task example.
+ */
+abstract class GreetingTask: DefaultTask() {
+	@TaskAction
+	fun greet() {
+		println("Hello from GreetingTask")
+	}
+}
+
+tasks.register<GreetingTask>("helloFromGreetingTask")
