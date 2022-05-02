@@ -6,6 +6,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
+	base
 }
 
 group = "com.leonovich.fantasticgradle"
@@ -123,3 +124,29 @@ abstract class GreetingTask: DefaultTask() {
 }
 
 tasks.register<GreetingTask>("helloFromGreetingTask")
+
+
+/**
+ * https://docs.gradle.org/current/dsl/org.gradle.api.tasks.bundling.Tar.html
+ */
+tasks.register<Tar>("tarTextFiles") {
+	compression = Compression.GZIP
+	println("root=$rootDir")
+	from(rootDir)
+		.include("*.txt")
+		.into("text")
+		.rename("(.+).txt", "$1.text")
+
+	doFirst {
+		println("Creating TAR file")
+	}
+}
+
+/**
+ * Aggregation task. Do nothing itself, but just calls some set of other tasks.
+ */
+tasks.register("createArchive") {
+	dependsOn("tarTextFiles")
+}
+
+//TODO https://docs.gradle.org/current/userguide/working_with_files.html
