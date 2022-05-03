@@ -1,0 +1,1 @@
+Here is the text file example to be processed by 'createArchive' gradle task.

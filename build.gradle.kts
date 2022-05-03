@@ -1,5 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.util.capitalizeDecapitalize.toUpperCaseAsciiOnly
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+
 
 plugins {
 	id("org.springframework.boot") version "2.6.7"
@@ -43,6 +47,27 @@ dependencies {
 	testImplementation("io.projectreactor:reactor-test")
 }
 
+// Build Script section BEGIN ------------------------------------------------------------------------------------------
+/**
+ * If your build script needs to use external libraries, you can add them to the script’s classpath
+ * in the build script itself. You do this using the buildscript() method, passing in a block
+ * which declares the build script classpath.
+ *
+ * @see https://docs.gradle.org/current/userguide/tutorial_using_tasks.html#sec:build_script_external_dependencies
+ */
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+
+	dependencies {
+		//classpath("commons-codec:commons-codec:1.2")
+	}
+}
+// Build Script section END --------------------------------------------------------------------------------------------
+
+// Tasks section BEGIN -------------------------------------------------------------------------------------------------
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
@@ -117,21 +142,33 @@ tasks.named("task_0") {
  * Custom task example.
  */
 abstract class GreetingTask: DefaultTask() {
+
+	@get:Input
+	abstract val greeting: Property<String>
+
+	init {
+		greeting.convention("Hello from GreetingTask")
+	}
+
 	@TaskAction
 	fun greet() {
-		println("Hello from GreetingTask")
+		println(greeting.get())
 	}
 }
 
-tasks.register<GreetingTask>("helloFromGreetingTask")
+tasks.register<GreetingTask>("helloFromGreetingTaskDefault")
 
+tasks.register<GreetingTask>("helloFromGreetingTaskCustom") {
+	greeting.set("Hello from 'helloFromGreetingTaskCustom'")
+}
 
 /**
- * https://docs.gradle.org/current/dsl/org.gradle.api.tasks.bundling.Tar.html
+ * @see https://docs.gradle.org/current/dsl/org.gradle.api.tasks.bundling.Tar.html
+ * @sample gradle tarTextFiles --rerun-tasks
  */
 tasks.register<Tar>("tarTextFiles") {
 	compression = Compression.GZIP
-	println("root=$rootDir")
+	println("tarTextFiles#root:$rootDir")
 	from(rootDir)
 		.include("*.txt")
 		.into("text")
@@ -149,4 +186,10 @@ tasks.register("createArchive") {
 	dependsOn("tarTextFiles")
 }
 
-//TODO https://docs.gradle.org/current/userguide/working_with_files.html
+tasks.register("encode") {
+	doLast {
+		val encodedString = org.apache.commons.codec.binary.Base64().encode("Hello World!\n".toByteArray())
+		println(encodedString)
+	}
+}
+// Tasks section END ---------------------------------------------------------------------------------------------------
