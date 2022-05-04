@@ -3,8 +3,9 @@ import org.jetbrains.kotlin.util.capitalizeDecapitalize.toUpperCaseAsciiOnly
 //----------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
-
-
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+// Plugins section BEGIN -----------------------------------------------------------------------------------------------
 plugins {
 	id("org.springframework.boot") version "2.6.7"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
@@ -12,7 +13,9 @@ plugins {
 	kotlin("plugin.spring") version "1.6.21"
 	base
 }
-
+// Plugins section END -------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+// Configurations section BEGIN ----------------------------------------------------------------------------------------
 group = "com.leonovich.fantasticgradle"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -23,8 +26,15 @@ configurations {
 	}
 }
 
+java {
+	withSourcesJar()
+}
+// Configurations section END ------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+// Dependencies section BEGIN ------------------------------------------------------------------------------------------
 repositories {
 	mavenCentral()
+	mavenLocal()
 }
 
 dependencies {
@@ -46,7 +56,8 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 }
-
+// Dependencies section END --------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // Build Script section BEGIN ------------------------------------------------------------------------------------------
 /**
  * If your build script needs to use external libraries, you can add them to the script’s classpath
@@ -57,16 +68,16 @@ dependencies {
  */
 buildscript {
 	repositories {
-		mavenLocal()
 		mavenCentral()
+		mavenLocal()
 	}
 
 	dependencies {
-		//classpath("commons-codec:commons-codec:1.2")
+		classpath("commons-codec:commons-codec:1.2")
 	}
 }
 // Build Script section END --------------------------------------------------------------------------------------------
-
+//----------------------------------------------------------------------------------------------------------------------
 // Tasks section BEGIN -------------------------------------------------------------------------------------------------
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
@@ -77,6 +88,17 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.jar {
+	manifest {
+		attributes(
+			mapOf(
+				"Implementation-Title" to project.name,
+				"Implementation-Version" to project.version
+			)
+		)
+	}
 }
 
 /**
@@ -193,3 +215,4 @@ tasks.register("encode") {
 	}
 }
 // Tasks section END ---------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
