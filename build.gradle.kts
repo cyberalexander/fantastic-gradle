@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.util.capitalizeDecapitalize.toUpperCaseAsciiOnly
+
+println("Processing 'build.gradle.kts' during the configuration phase.")
 //----------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
@@ -28,6 +30,30 @@ configurations {
 
 java {
 	withSourcesJar()
+}
+
+/**
+ * 'afterProject' notification is received regardless of whether
+ * the project evaluates successfully or fails with an exception.
+ */
+gradle.afterProject {
+	if (state.failure != null) {
+		println("Evaluation of $project failed!")
+	} else {
+		println("Evaluation of $project succeeded.")
+	}
+}
+
+gradle.taskGraph.beforeTask {
+	//println("\nExecuting $this ...")
+}
+
+gradle.taskGraph.afterTask {
+//	if (state.failure != null) {
+//		println("$this failed!")
+//	} else {
+//		println("$this succeed!")
+//	}
 }
 // Configurations section END ------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
