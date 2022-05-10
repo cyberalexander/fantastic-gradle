@@ -9,11 +9,11 @@ println("Processing 'build.gradle.kts' during the configuration phase.")
 //----------------------------------------------------------------------------------------------------------------------
 // Plugins section BEGIN -----------------------------------------------------------------------------------------------
 plugins {
-	id("org.springframework.boot") version "2.6.7"
-	id("io.spring.dependency-management") version "1.0.11.RELEASE"
+	base
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
-	base
+	id("org.springframework.boot") version "2.6.7"
+	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 }
 // Plugins section END -------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
@@ -90,7 +90,7 @@ dependencies {
  * in the build script itself. You do this using the buildscript() method, passing in a block
  * which declares the build script classpath.
  *
- * @see https://docs.gradle.org/current/userguide/tutorial_using_tasks.html#sec:build_script_external_dependencies
+ * @link https://docs.gradle.org/current/userguide/tutorial_using_tasks.html#sec:build_script_external_dependencies
  */
 buildscript {
 	repositories {
@@ -131,8 +131,11 @@ tasks.jar {
  * The task dedicated to print "Hello World!" phrase in console after successful execution.
  */
 tasks.register("hello") {
-    dependsOn("build")
+	group = JavaBasePlugin.DOCUMENTATION_GROUP
+	description = "Says 'Hello World!' as the result of invocation. As well it's accessing and printing custom project property."
+	dependsOn("build")
 	doLast {
+		println("fantastic_gradle_version: ${project.property("fantastic_gradle_version")}")
 		println("Hello World!")
 	}
 }
@@ -212,7 +215,7 @@ tasks.register<GreetingTask>("helloFromGreetingTaskCustom") {
 
 /**
  * @see https://docs.gradle.org/current/dsl/org.gradle.api.tasks.bundling.Tar.html
- * @sample gradle tarTextFiles --rerun-tasks
+ * @command 'gradle tarTextFiles --rerun-tasks'
  */
 tasks.register<Tar>("tarTextFiles") {
 	compression = Compression.GZIP
