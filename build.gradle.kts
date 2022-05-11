@@ -10,6 +10,7 @@ println("Processing 'build.gradle.kts' during the configuration phase.")
 // Plugins section BEGIN -----------------------------------------------------------------------------------------------
 plugins {
 	base
+	pmd
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	id("org.springframework.boot") version "2.6.7"
@@ -20,7 +21,7 @@ plugins {
 // Configurations section BEGIN ----------------------------------------------------------------------------------------
 group = "com.leonovich.fantasticgradle"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 configurations {
 	compileOnly {
@@ -30,6 +31,17 @@ configurations {
 
 java {
 	withSourcesJar()
+}
+
+/**
+ * PMD plugin extension configuration.
+ * @link https://docs.gradle.org/current/userguide/pmd_plugin.html
+ */
+pmd {
+	isConsoleOutput = true
+	toolVersion = project.property("pmd_plugin_version").toString()
+	rulesMinimumPriority.set(3)
+	ruleSetConfig = resources.text.fromFile(project.property("pmd_rules_location").toString())
 }
 
 /**
@@ -86,9 +98,10 @@ dependencies {
 //----------------------------------------------------------------------------------------------------------------------
 // Build Script section BEGIN ------------------------------------------------------------------------------------------
 /**
- * If your build script needs to use external libraries, you can add them to the script’s classpath
- * in the build script itself. You do this using the buildscript() method, passing in a block
- * which declares the build script classpath.
+ * The buildScript block determines which plugins, task classes, and other classes are available for use in the rest
+ * of the build script. Without a buildScript block, you can use everything that ships with Gradle out-of-the-box.
+ * If you additionally want to use third-party plugins, task classes, or other classes (in the build script!),
+ * you have to specify the corresponding dependencies in the buildScript block.
  *
  * @link https://docs.gradle.org/current/userguide/tutorial_using_tasks.html#sec:build_script_external_dependencies
  */
@@ -219,7 +232,7 @@ tasks.register<GreetingTask>("helloFromGreetingTaskCustom") {
  */
 tasks.register<Tar>("tarTextFiles") {
 	compression = Compression.GZIP
-	println("tarTextFiles#root:$rootDir")
+	//println("tarTextFiles#root:$rootDir")
 	from(rootDir)
 		.include("*.txt")
 		.into("text")
