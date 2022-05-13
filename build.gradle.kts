@@ -11,6 +11,7 @@ println("Processing 'build.gradle.kts' during the configuration phase.")
 plugins {
 	base
 	pmd
+	checkstyle
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	id("org.springframework.boot") version "2.6.7"
