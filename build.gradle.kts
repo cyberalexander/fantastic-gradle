@@ -204,7 +204,7 @@ tasks.named("task_0") {
 }
 
 /**
- * Custom task example.
+ * Custom task object example.
  */
 abstract class GreetingTask: DefaultTask() {
 
