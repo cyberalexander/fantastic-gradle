@@ -45,6 +45,12 @@ pmd {
 	ruleSetConfig = resources.text.fromFile(project.property("pmd_rules_location").toString())
 }
 
+checkstyle {
+	configFile = file("$rootDir/gradle/checkstyle/checkstyle.xml")
+	configDirectory.set(file("$rootDir/gradle/checkstyle"))
+	toolVersion = "10.2"
+}
+
 /**
  * 'afterProject' notification is received regardless of whether
  * the project evaluates successfully or fails with an exception.
