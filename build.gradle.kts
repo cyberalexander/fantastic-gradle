@@ -100,6 +100,8 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
+
+	implementation("org.jeasy:easy-random-core:5.0.0")
 }
 // Dependencies section END --------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------

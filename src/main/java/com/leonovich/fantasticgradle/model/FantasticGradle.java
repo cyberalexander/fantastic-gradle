@@ -1,4 +1,4 @@
-package com.leonovich.fantasticgradle.dto;
+package com.leonovich.fantasticgradle.model;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class FantasticGradleDto {
+public class FantasticGradle {
 
     private UUID fantasticGradleId;
 
@@ -16,3 +16,4 @@ public class FantasticGradleDto {
 
     private LocalDateTime createdWhen;
 }
+
