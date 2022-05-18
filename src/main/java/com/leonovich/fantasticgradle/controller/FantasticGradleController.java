@@ -5,10 +5,7 @@ import com.leonovich.fantasticgradle.mapper.FantasticGradleModelMapper;
 import com.leonovich.fantasticgradle.model.FantasticGradle;
 import com.leonovich.fantasticgradle.repository.FantasticRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -31,9 +28,16 @@ public class FantasticGradleController {
      * @return The instance of {@link FantasticGradleDto} associated with given {@param fantasticGradleId}
      */
     @GetMapping(path = "{fantasticGradleId}")
-    public FantasticGradleDto fantasticGradle(@PathVariable UUID fantasticGradleId) {
+    public FantasticGradleDto getFantasticGradle(@PathVariable UUID fantasticGradleId) {
         return mapper.map(repository.get(fantasticGradleId));
     }
+
+    @PostMapping
+    public FantasticGradleDto createFantasticGradle(@RequestBody FantasticGradleDto request) {
+        //TODO implement creation of the FantasticGradle in memory
+        return request;
+    }
+
 
     //TODO #1 : Continue working on FantasticGradleController extension
     //TODO #2 : Implement unit tests
