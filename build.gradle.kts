@@ -83,6 +83,7 @@ repositories {
 }
 
 dependencies {
+	// Added initially
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-rest")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas")
@@ -101,6 +102,11 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 
+	// Added during development
+	compileOnly("javax.validation:validation-api")
+	/**
+	 * Actually it's kinda tool to be used in unit-tests to generate test-data. But I use it in application code.
+	 */
 	implementation("org.jeasy:easy-random-core:5.0.0")
 }
 // Dependencies section END --------------------------------------------------------------------------------------------

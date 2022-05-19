@@ -14,4 +14,12 @@ public class FantasticGradleModelMapper {
                 .createdWhen(source.getCreatedWhen())
                 .build();
     }
+
+    public FantasticGradle map(FantasticGradleDto source) {
+        return FantasticGradle.builder()
+                .fantasticGradleId(source.getFantasticGradleId())
+                .name(source.getName())
+                .createdWhen(source.getCreatedWhen())
+                .build();
+    }
 }

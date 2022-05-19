@@ -7,6 +7,7 @@ import com.leonovich.fantasticgradle.repository.FantasticRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 /**
@@ -23,19 +24,21 @@ public class FantasticGradleController {
 
 
     /**
+     * The API retrieves the instance of {@link FantasticGradleDto} from a persistence storage by its unique identifier.
+     * <p>
      * Example of UUID : 4fcfc816-2f2f-420a-b159-4150366e489c or use {@code UUID.randomUUID()}
+     *
      * @param fantasticGradleId The unique identifier of fantastic gradle
      * @return The instance of {@link FantasticGradleDto} associated with given {@param fantasticGradleId}
      */
     @GetMapping(path = "{fantasticGradleId}")
-    public FantasticGradleDto getFantasticGradle(@PathVariable UUID fantasticGradleId) {
+    public FantasticGradleDto getFantasticGradle(@PathVariable @NotBlank UUID fantasticGradleId) {
         return mapper.map(repository.get(fantasticGradleId));
     }
 
     @PostMapping
-    public FantasticGradleDto createFantasticGradle(@RequestBody FantasticGradleDto request) {
-        //TODO implement creation of the FantasticGradle in memory
-        return request;
+    public UUID createFantasticGradle(@RequestBody FantasticGradleDto request) {
+        return repository.save(mapper.map(request));
     }
 
 
