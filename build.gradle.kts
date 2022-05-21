@@ -273,3 +273,40 @@ tasks.register("encode") {
 }
 // Tasks section END ---------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
+// Extra properties Demonstration BEGIN --------------------------------------------------------------------------------
+/**
+ * <code> gradle -q printProperties </code>
+ * <p>
+ * Extra properties are added to the 'Project' object using by extra. Extra properties can be accessed from
+ * anywhere their owning object can be accessed, giving them a wider scope than local variables.
+ */
+val springVersionExtra by extra ("0.0.1.RELEASE")
+val emailNotification by extra {"just_some_mailbox@email.com"}
+
+sourceSets.all { extra["purpose"] = null }
+
+sourceSets {
+	main {
+		extra["purpose"] = "production"
+	}
+	test {
+		extra["purpose"] = "test"
+	}
+	create("plugin") {
+		extra["purpose"] = "production"
+	}
+}
+
+tasks.register("printProperties") {
+	println("springVersionExtra=$springVersionExtra")
+	println("emailNotification=$emailNotification")
+
+	sourceSets.matching {
+		it.extra["purpose"] == "production"
+	}.forEach {
+		println(it.name)
+	}
+}
+
+// Extra properties Demonstration END ----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
