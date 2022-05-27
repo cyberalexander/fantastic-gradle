@@ -45,6 +45,10 @@ pmd {
 	ruleSetConfig = resources.text.fromFile(project.property("pmd_rules_location").toString())
 }
 
+/**
+ * Checkstyle plugin extension configuration.
+ * @link https://docs.gradle.org/current/userguide/checkstyle_plugin.html
+ */
 checkstyle {
 	configFile = file("$rootDir/gradle/checkstyle/checkstyle.xml")
 	configDirectory.set(file("$rootDir/gradle/checkstyle"))
@@ -95,12 +99,15 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.springframework.session:spring-session-core")
-	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
+
+	compileOnly("org.projectlombok:lombok")
+	testCompileOnly("org.projectlombok:lombok")
+	testAnnotationProcessor("org.projectlombok:lombok")
+	annotationProcessor("org.projectlombok:lombok")
 
 	// Added during development
 	compileOnly("javax.validation:validation-api")
