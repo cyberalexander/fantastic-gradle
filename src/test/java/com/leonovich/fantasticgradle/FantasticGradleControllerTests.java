@@ -9,6 +9,9 @@ import lombok.Setter;
 import org.assertj.core.api.Assertions;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,13 +22,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Getter
 @Setter
 @ActiveProfiles(value = {"test"})
 @WebMvcTest(
-        controllers = {FantasticGradleController.class}
+        controllers = {FantasticGradleController.class, FantasticGradleModelMapper.class}
 )
 class FantasticGradleControllerTests {
     private static final EasyRandom EASY_RANDOM = new EasyRandom();
@@ -35,13 +40,14 @@ class FantasticGradleControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Autowired
     private FantasticGradleModelMapper mapper;
 
     @MockBean
     private FantasticRepository<FantasticGradle, UUID> repository;
 
     @Autowired
+    @InjectMocks
     private FantasticGradleController controller;
 
     @Test
@@ -52,13 +58,16 @@ class FantasticGradleControllerTests {
     @Test
     void testGetFantasticGradle() throws Exception {
         FantasticGradle expected = EASY_RANDOM.nextObject(FantasticGradle.class);
-        mapper.map(expected);
-        repository.get(expected.getFantasticGradleId());
+
+        Mockito.when(repository.get(expected.getFantasticGradleId())).thenReturn(expected);
 
         mockMvc.perform(
                 get(GET_API, expected.getFantasticGradleId()).contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(status().isOk());
-                //.andExpect(content().json(mapper.map(expected).toString(), true)); //TODO add response validation
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fantasticGradleId").hasJsonPath())
+                .andExpect(jsonPath("$.name").value(expected.getName()))
+                .andExpect(jsonPath("$.createdWhen").exists());
     }
 }
