@@ -149,6 +149,16 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+
+	val events = project.findProperty("testLoggingEvents") as String? ?: "PASSED,FAILED,SKIPPED"
+	val testLoggingEvents = events.split(",")
+		.map { org.gradle.api.tasks.testing.logging.TestLogEvent.valueOf(it) }
+		.toTypedArray()
+
+	testLogging {
+		events(*testLoggingEvents)
+		showStandardStreams = false
+	}
 }
 
 tasks.jar {
