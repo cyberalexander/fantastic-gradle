@@ -15,8 +15,10 @@
  */
 package com.leonovich.fantasticgradle.repository;
 
+import java.util.Optional;
+
 public interface FantasticRepository<T, K> {
 
-    T get(K fantasticGradleId);
+    Optional<T> get(K fantasticGradleId);
     K save(T fantasticGradle);
 }

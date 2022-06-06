@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -53,7 +54,8 @@ public class FantasticGradleController {
      */
     @GetMapping(path = "{fantasticGradleId}")
     public FantasticGradleDto getFantasticGradle(@PathVariable @NotBlank UUID fantasticGradleId) {
-        return mapper.map(repository.get(fantasticGradleId));
+        Optional<FantasticGradle> fantasticGradle = repository.get(fantasticGradleId);
+        return fantasticGradle.map(result -> mapper.map(result)).orElse(null);
     }
 
     @PostMapping

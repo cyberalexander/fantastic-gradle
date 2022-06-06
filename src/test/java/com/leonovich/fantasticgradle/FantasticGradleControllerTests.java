@@ -33,6 +33,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -73,7 +74,7 @@ class FantasticGradleControllerTests {
     void testGetFantasticGradle() throws Exception {
         FantasticGradle expected = EASY_RANDOM.nextObject(FantasticGradle.class);
 
-        Mockito.when(repository.get(expected.getFantasticGradleId())).thenReturn(expected);
+        Mockito.when(repository.get(expected.getFantasticGradleId())).thenReturn(Optional.of(expected));
 
         mockMvc.perform(
                 get(GET_API, expected.getFantasticGradleId()).contentType(MediaType.APPLICATION_JSON)

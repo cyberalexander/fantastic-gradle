@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Primary
@@ -33,12 +34,14 @@ public class InMemoryFantasticGradleRepository implements FantasticRepository<Fa
     private static final Map<UUID, FantasticGradle> STORAGE = new HashMap<>();
 
     @Override
-    public FantasticGradle get(UUID fantasticGradleId) {
-        return FantasticGradle.builder()
-                .fantasticGradleId(fantasticGradleId)
-                .name(EASY_RANDOM.nextObject(String.class))
-                .createdWhen(LocalDateTime.now())
-                .build();
+    public Optional<FantasticGradle> get(UUID fantasticGradleId) {
+        return Optional.ofNullable(
+                FantasticGradle.builder()
+                        .fantasticGradleId(fantasticGradleId)
+                        .name(EASY_RANDOM.nextObject(String.class))
+                        .createdWhen(LocalDateTime.now())
+                        .build()
+        );
     }
 
     @Override
