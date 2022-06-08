@@ -15,6 +15,7 @@
  */
 package com.leonovich.fantasticgradle;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leonovich.fantasticgradle.controller.FantasticGradleController;
 import com.leonovich.fantasticgradle.mapper.FantasticGradleModelMapper;
 import com.leonovich.fantasticgradle.model.FantasticGradle;
@@ -37,6 +38,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,6 +59,9 @@ class FantasticGradleControllerTests {
 
     @Autowired
     private FantasticGradleModelMapper mapper;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private FantasticRepository<FantasticGradle, UUID> repository;
@@ -84,5 +89,18 @@ class FantasticGradleControllerTests {
                 .andExpect(jsonPath("$.fantasticGradleId").hasJsonPath())
                 .andExpect(jsonPath("$.name").value(expected.getName()))
                 .andExpect(jsonPath("$.createdWhen").exists());
+    }
+
+    @Test
+    void testCreateFantasticGradle() throws Exception {
+        FantasticGradle expected = EASY_RANDOM.nextObject(FantasticGradle.class);
+
+        Mockito.when(repository.save(expected)).thenReturn(expected.getFantasticGradleId());
+
+        mockMvc.perform(
+                post(API).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(expected))
+                )
+                .andExpect(status().isCreated())
+                .andExpect(content().string(objectMapper.writeValueAsString(expected.getFantasticGradleId())));
     }
 }
