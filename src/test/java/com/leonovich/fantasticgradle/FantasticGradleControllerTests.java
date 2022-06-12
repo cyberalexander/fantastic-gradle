@@ -92,6 +92,21 @@ class FantasticGradleControllerTests {
     }
 
     @Test
+    void testGetFantasticGradleNotFound() throws Exception {
+        FantasticGradle expected = EASY_RANDOM.nextObject(FantasticGradle.class);
+
+        Mockito.when(repository.get(expected.getFantasticGradleId())).thenReturn(Optional.empty());
+
+        mockMvc.perform(
+                        get(GET_API, expected.getFantasticGradleId()).contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.fantasticGradleId").doesNotHaveJsonPath())
+                .andExpect(jsonPath("$.name").doesNotExist())
+                .andExpect(jsonPath("$.createdWhen").doesNotExist());
+    }
+
+    @Test
     void testCreateFantasticGradle() throws Exception {
         FantasticGradle expected = EASY_RANDOM.nextObject(FantasticGradle.class);
 
