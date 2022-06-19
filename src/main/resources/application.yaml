@@ -1,0 +1,5 @@
+logging:
+  level:
+    root: INFO
+    com.leonovich.fantasticgradle: DEBUG
+    org.springframework: INFO

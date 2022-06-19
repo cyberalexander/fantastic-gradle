@@ -19,7 +19,7 @@ package com.leonovich.fantasticgradle.repository;
 import com.leonovich.fantasticgradle.FantasticGradleApplication;
 import com.leonovich.fantasticgradle.model.FantasticGradle;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.apachecommons.CommonsLog;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Optional;
 import java.util.UUID;
 
-@Slf4j
+@CommonsLog
 @Getter
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = FantasticGradleApplication.class)
