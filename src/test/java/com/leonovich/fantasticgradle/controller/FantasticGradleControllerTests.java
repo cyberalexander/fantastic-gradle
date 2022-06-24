@@ -38,6 +38,7 @@ import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FantasticGradleControllerTests {
     private static final EasyRandom EASY_RANDOM = new EasyRandom();
     private static final String API = "/api/v1/fantastic";
-    private static final String GET_API = API.concat("/{fantasticGradleId}");
+    private static final String GET_PUT_API = API.concat("/{fantasticGradleId}");
 
     @Autowired
     private MockMvc mockMvc;
@@ -80,9 +81,8 @@ class FantasticGradleControllerTests {
 
         Mockito.when(repository.get(expected.getFantasticGradleId())).thenReturn(Optional.of(expected));
 
-        mockMvc.perform(
-                get(GET_API, expected.getFantasticGradleId()).contentType(MediaType.APPLICATION_JSON)
-                )
+        mockMvc.perform(get(GET_PUT_API, expected.getFantasticGradleId())
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fantasticGradleId").hasJsonPath())
@@ -96,9 +96,8 @@ class FantasticGradleControllerTests {
 
         Mockito.when(repository.get(expected.getFantasticGradleId())).thenReturn(Optional.empty());
 
-        mockMvc.perform(
-                        get(GET_API, expected.getFantasticGradleId()).contentType(MediaType.APPLICATION_JSON)
-                )
+        mockMvc.perform(get(GET_PUT_API, expected.getFantasticGradleId())
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.fantasticGradleId").doesNotHaveJsonPath())
                 .andExpect(jsonPath("$.name").doesNotExist())
@@ -111,10 +110,32 @@ class FantasticGradleControllerTests {
 
         Mockito.when(repository.save(expected)).thenReturn(expected.getFantasticGradleId());
 
-        mockMvc.perform(
-                post(API).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(expected))
-                )
+        mockMvc.perform(post(API)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(expected)))
                 .andExpect(status().isCreated())
                 .andExpect(content().string(objectMapper.writeValueAsString(expected.getFantasticGradleId())));
+    }
+
+    @Test
+    void testUpdateFantasticGradle() throws Exception {
+        FantasticGradle modified = EASY_RANDOM.nextObject(FantasticGradle.class);
+        FantasticGradle updated = EASY_RANDOM.nextObject(FantasticGradle.class);
+        updated.setFantasticGradleId(modified.getFantasticGradleId());
+
+        Mockito.when(repository.get(modified.getFantasticGradleId())).thenReturn(Optional.of(updated));
+
+        // 1. Test that PUT operation invoked successfully
+        mockMvc.perform(put(GET_PUT_API, modified.getFantasticGradleId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(modified)))
+                .andExpect(status().isOk());
+
+        // 2. Invoke GET operation to check that object was updated during PUT operation
+        mockMvc.perform(get(GET_PUT_API, modified.getFantasticGradleId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(updated)))
+                .andExpect(jsonPath("$.name").value(modified.getName()));
     }
 }
