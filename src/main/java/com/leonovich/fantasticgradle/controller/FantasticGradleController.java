@@ -20,6 +20,7 @@ import com.leonovich.fantasticgradle.mapper.FantasticGradleModelMapper;
 import com.leonovich.fantasticgradle.model.FantasticGradle;
 import com.leonovich.fantasticgradle.repository.FantasticRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,7 @@ import java.util.UUID;
 /**
  * The controller is aimed to manage {@link FantasticGradleDto} entity.
  */
+@CommonsLog
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/api/v1/fantastic", produces = {"application/json"})
@@ -57,6 +59,7 @@ public class FantasticGradleController {
      */
     @GetMapping(path = "{fantasticGradleId}")
     public FantasticGradleDto getFantasticGradle(@PathVariable @NotBlank UUID fantasticGradleId) {
+        log.info(String.format("GET /api/v1/fantastic/%s API invoked.", fantasticGradleId));
         Optional<FantasticGradle> fantasticGradle = repository.get(fantasticGradleId);
         return fantasticGradle.map(result -> mapper.map(result)).orElse(null);
     }
@@ -64,6 +67,7 @@ public class FantasticGradleController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UUID createFantasticGradle(@RequestBody FantasticGradleDto request) {
+        log.info(String.format("POST /api/v1/fantastic API invoked with params : %s", request));
         return repository.save(mapper.map(request));
     }
 
@@ -71,6 +75,7 @@ public class FantasticGradleController {
     public void updateFantasticGradle(
             @PathVariable @NotBlank UUID fantasticGradleId,
             @RequestBody FantasticGradleDto modified) {
+        log.info(String.format("PUT /api/v1/fantastic/%s API invoked with params : %s", fantasticGradleId, modified));
         repository.get(fantasticGradleId).ifPresent(queried -> {
             queried.setName(modified.getName());
             repository.save(queried);
