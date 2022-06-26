@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,8 +38,12 @@ public class InMemoryFantasticGradleRepository implements FantasticRepository<Fa
 
     @Override
     public UUID save(FantasticGradle fantasticGradle) {
-        fantasticGradle.setFantasticGradleId(UUID.randomUUID());
-        STORAGE.put(fantasticGradle.getFantasticGradleId(), fantasticGradle);
+        if (Objects.isNull(fantasticGradle.getFantasticGradleId())) {
+            fantasticGradle.setFantasticGradleId(UUID.randomUUID());
+            STORAGE.put(fantasticGradle.getFantasticGradleId(), fantasticGradle);
+        } else {
+            STORAGE.put(fantasticGradle.getFantasticGradleId(), fantasticGradle);
+        }
         return fantasticGradle.getFantasticGradleId();
     }
 }

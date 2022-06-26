@@ -56,4 +56,21 @@ class InMemoryFantasticGradleRepositoryTests {
         Assertions.assertEquals(expected.getName(), actual.get().getName());
         Assertions.assertEquals(expected.getCreatedWhen(), actual.get().getCreatedWhen());
     }
+
+    @Test
+    void testGetIdempotent() {
+        //given
+        FantasticGradle expected = EASY_RANDOM.nextObject(FantasticGradle.class);
+
+        //when
+        UUID id1 = repository.save(expected);
+        Optional<FantasticGradle> actual1 = repository.get(id1);
+
+        UUID id2 = repository.save(expected);
+        Optional<FantasticGradle> actual2 = repository.get(id2);
+
+        //then
+        Assertions.assertEquals(id1, id2);
+        Assertions.assertEquals(actual1, actual2);
+    }
 }
