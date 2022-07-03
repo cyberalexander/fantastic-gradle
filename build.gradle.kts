@@ -88,9 +88,9 @@ repositories {
 
 dependencies {
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-	annotationProcessor("org.mapstruct:mapstruct-processor:1.4.2.Final")
 	annotationProcessor("org.projectlombok:lombok")
 	testAnnotationProcessor("org.projectlombok:lombok")
+	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.2.Final")
 	// Added initially
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-rest")
@@ -112,7 +112,7 @@ dependencies {
 
 	// Added during development
 	compileOnly("javax.validation:validation-api")
-	implementation("org.mapstruct:mapstruct:1.4.2.Final")
+	implementation("org.mapstruct:mapstruct:1.5.2.Final")
 	/**
 	 * Actually it's kinda tool to be used in unit-tests to generate test-data. But I use it in application code.
 	 */
