@@ -16,7 +16,7 @@
 package com.leonovich.fantasticgradle.controller;
 
 import com.leonovich.fantasticgradle.dto.FantasticGradleDto;
-import com.leonovich.fantasticgradle.mapper.FantasticGradleModelMapper;
+import com.leonovich.fantasticgradle.mapper.FantasticGradleMapper;
 import com.leonovich.fantasticgradle.model.FantasticGradle;
 import com.leonovich.fantasticgradle.repository.FantasticRepository;
 import lombok.AllArgsConstructor;
@@ -44,7 +44,7 @@ import java.util.UUID;
 @RequestMapping(value = "/api/v1/fantastic", produces = {"application/json"})
 public class FantasticGradleController {
 
-    private FantasticGradleModelMapper mapper;
+    private FantasticGradleMapper mapper;
 
     private FantasticRepository<FantasticGradle, UUID> repository;
 
@@ -61,14 +61,14 @@ public class FantasticGradleController {
     public FantasticGradleDto getFantasticGradle(@PathVariable @NotBlank UUID fantasticGradleId) {
         log.info(String.format("GET /api/v1/fantastic/%s API invoked.", fantasticGradleId));
         Optional<FantasticGradle> fantasticGradle = repository.get(fantasticGradleId);
-        return fantasticGradle.map(result -> mapper.map(result)).orElse(null);
+        return fantasticGradle.map(result -> mapper.modelToDto(result)).orElse(null);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UUID createFantasticGradle(@RequestBody FantasticGradleDto request) {
         log.info(String.format("POST /api/v1/fantastic API invoked with params : %s", request));
-        return repository.save(mapper.map(request));
+        return repository.save(mapper.dtoToModel(request));
     }
 
     @PutMapping(path = "{fantasticGradleId}")
@@ -88,5 +88,4 @@ public class FantasticGradleController {
     //TODO #3 : Implement logging
     //TODO #4 : Implement swagger
     //TODO #5 : Configure lombok annotations
-    //TODO #6 : Implement objectMapper to convert Model to DTO
 }

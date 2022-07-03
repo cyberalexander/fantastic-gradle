@@ -16,7 +16,7 @@
 package com.leonovich.fantasticgradle.controller;
 
 import com.leonovich.fantasticgradle.dto.FantasticGradleDto;
-import com.leonovich.fantasticgradle.mapper.FantasticGradleModelMapper;
+import com.leonovich.fantasticgradle.mapper.FantasticGradleMapper;
 import com.leonovich.fantasticgradle.model.FantasticGradle;
 import com.leonovich.fantasticgradle.repository.FantasticRepository;
 import lombok.AllArgsConstructor;
@@ -37,7 +37,7 @@ import java.util.UUID;
 public class FantasticGradleV2Controller {
     private static final String API_VERSION_SUFFIX = "_V2";
 
-    private FantasticGradleModelMapper mapper;
+    private FantasticGradleMapper mapper;
 
     private FantasticRepository<FantasticGradle, UUID> repository;
 
@@ -55,7 +55,7 @@ public class FantasticGradleV2Controller {
                     result.setName(result.getName().concat(API_VERSION_SUFFIX));
                     return result;
                 })
-                .map(result -> mapper.map(result))
+                .map(result -> mapper.modelToDto(result))
                 .orElse(null);
     }
 }
