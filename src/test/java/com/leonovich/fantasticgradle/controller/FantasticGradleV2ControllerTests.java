@@ -17,7 +17,7 @@
 package com.leonovich.fantasticgradle.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.leonovich.fantasticgradle.mapper.FantasticGradleModelMapper;
+import com.leonovich.fantasticgradle.mapper.FantasticGradleMapper;
 import com.leonovich.fantasticgradle.model.FantasticGradle;
 import com.leonovich.fantasticgradle.repository.FantasticRepository;
 import lombok.Getter;
@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Setter
 @ActiveProfiles(value = {"test"})
 @WebMvcTest(
-        controllers = {FantasticGradleV2Controller.class, FantasticGradleModelMapper.class}
+        controllers = {FantasticGradleV2Controller.class, FantasticGradleMapper.class}
 )
 class FantasticGradleV2ControllerTests {
     private static final EasyRandom EASY_RANDOM = new EasyRandom();
@@ -56,7 +56,7 @@ class FantasticGradleV2ControllerTests {
     private MockMvc mockMvc;
 
     @Autowired
-    private FantasticGradleModelMapper mapper;
+    private FantasticGradleMapper mapper;
 
     @Autowired
     private ObjectMapper objectMapper;
