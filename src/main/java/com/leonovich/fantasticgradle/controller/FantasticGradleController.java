@@ -84,7 +84,6 @@ public class FantasticGradleController {
 
 
     //TODO #1 : Continue working on FantasticGradleController extension
-    //TODO #2 : Implement unit tests
     //TODO #3 : Implement logging
     //TODO #4 : Implement swagger
     //TODO #5 : Configure lombok annotations
