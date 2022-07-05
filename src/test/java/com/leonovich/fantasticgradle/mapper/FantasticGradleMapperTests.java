@@ -24,10 +24,11 @@ import org.mapstruct.factory.Mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
 class FantasticGradleMapperTests {
     private static final EasyRandom EASY_RANDOM = new EasyRandom();
 
-    private final FantasticGradleMapper mapper = Mappers.getMapper(FantasticGradleMapper.class);
+    private static final FantasticGradleMapper mapper = Mappers.getMapper(FantasticGradleMapper.class);
 
     @Test
     void testModelToDto() {
