@@ -19,6 +19,7 @@ import com.leonovich.fantasticgradle.model.FantasticGradle;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -34,6 +35,11 @@ public class InMemoryFantasticGradleRepository implements FantasticRepository<Fa
     @Override
     public Optional<FantasticGradle> get(UUID fantasticGradleId) {
         return Optional.ofNullable(STORAGE.get(fantasticGradleId));
+    }
+
+    @Override
+    public Collection<FantasticGradle> getAll() {
+        return STORAGE.values();
     }
 
     @Override

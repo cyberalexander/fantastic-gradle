@@ -15,10 +15,14 @@
  */
 package com.leonovich.fantasticgradle.repository;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public interface FantasticRepository<T, K> {
 
     Optional<T> get(K fantasticGradleId);
+
+    Collection<T> getAll();
+
     K save(T fantasticGradle);
 }

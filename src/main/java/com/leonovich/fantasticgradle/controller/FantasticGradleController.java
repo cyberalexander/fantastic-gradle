@@ -32,8 +32,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * The controller is aimed to manage {@link FantasticGradleDto} entity.
@@ -48,7 +50,6 @@ public class FantasticGradleController {
 
     private FantasticRepository<FantasticGradle, UUID> repository;
 
-
     /**
      * The API retrieves the instance of {@link FantasticGradleDto} from a persistence storage by its unique identifier.
      * <p>
@@ -62,6 +63,11 @@ public class FantasticGradleController {
         log.info(String.format("GET /api/v1/fantastic/%s API invoked.", fantasticGradleId));
         Optional<FantasticGradle> fantasticGradle = repository.get(fantasticGradleId);
         return fantasticGradle.map(result -> mapper.modelToDto(result)).orElse(null);
+    }
+
+    @GetMapping(path = "/all")
+    public List<FantasticGradleDto> getAll() {
+        return repository.getAll().stream().map(item -> mapper.modelToDto(item)).collect(Collectors.toList());
     }
 
     @PostMapping
