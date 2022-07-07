@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -72,5 +73,24 @@ class InMemoryFantasticGradleRepositoryTests {
         //then
         Assertions.assertEquals(id1, id2);
         Assertions.assertEquals(actual1, actual2);
+    }
+
+    @Test
+    void testGetAll() {
+        //given
+        FantasticGradle expected1 = EASY_RANDOM.nextObject(FantasticGradle.class);
+        FantasticGradle expected2 = EASY_RANDOM.nextObject(FantasticGradle.class);
+        FantasticGradle expected3 = EASY_RANDOM.nextObject(FantasticGradle.class);
+
+        //when
+        repository.save(expected1);
+        repository.save(expected2);
+        repository.save(expected3);
+        Collection<FantasticGradle> actual = repository.getAll();
+
+        //then
+        Assertions.assertTrue(actual.contains(expected1));
+        Assertions.assertTrue(actual.contains(expected2));
+        Assertions.assertTrue(actual.contains(expected3));
     }
 }
