@@ -66,7 +66,7 @@ public class FantasticGradleController {
     }
 
     @GetMapping(path = "/all")
-    public List<FantasticGradleDto> getAll() {
+    public List<FantasticGradleDto> getAllFantasticGradles() {
         return repository.getAll().stream().map(item -> mapper.modelToDto(item)).collect(Collectors.toList());
     }
 

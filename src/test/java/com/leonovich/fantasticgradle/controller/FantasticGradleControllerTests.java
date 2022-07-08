@@ -33,6 +33,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -102,6 +103,22 @@ class FantasticGradleControllerTests {
                 .andExpect(jsonPath("$.fantasticGradleId").doesNotHaveJsonPath())
                 .andExpect(jsonPath("$.name").doesNotExist())
                 .andExpect(jsonPath("$.createdWhen").doesNotExist());
+    }
+
+    @Test
+    void testGetAllFantasticGradles() throws Exception {
+        List<FantasticGradle> expected = List.of(
+                EASY_RANDOM.nextObject(FantasticGradle.class),
+                EASY_RANDOM.nextObject(FantasticGradle.class),
+                EASY_RANDOM.nextObject(FantasticGradle.class)
+        );
+
+        Mockito.when(repository.getAll()).thenReturn(expected);
+
+        mockMvc.perform(get(API + "/all")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(expected)));
     }
 
     @Test
