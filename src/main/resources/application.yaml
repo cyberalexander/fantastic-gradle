@@ -3,3 +3,7 @@ logging:
     root: INFO
     com.leonovich.fantasticgradle: DEBUG
     org.springframework: INFO
+
+spring:
+  jpa:
+    show-sql: true

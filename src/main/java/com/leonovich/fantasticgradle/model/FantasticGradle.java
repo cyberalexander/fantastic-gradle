@@ -15,20 +15,37 @@
  */
 package com.leonovich.fantasticgradle.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 @Builder
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class FantasticGradle {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID fantasticGradleId;
 
     private String name;
 
     private LocalDateTime createdWhen;
+
+    @PrePersist
+    void autoConfigureCreatedWhen() {
+        this.createdWhen = LocalDateTime.now();
+    }
 }
 
