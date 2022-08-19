@@ -18,7 +18,6 @@ package com.leonovich.fantasticgradle.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leonovich.fantasticgradle.mapper.FantasticGradleMapper;
 import com.leonovich.fantasticgradle.model.FantasticGradle;
-import com.leonovich.fantasticgradle.repository.FantasticRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.assertj.core.api.Assertions;
@@ -29,6 +28,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -65,7 +65,7 @@ class FantasticGradleControllerTests {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private FantasticRepository<FantasticGradle, UUID> repository;
+    private CrudRepository<FantasticGradle, UUID> repository;
 
     @Autowired
     @InjectMocks
@@ -80,7 +80,7 @@ class FantasticGradleControllerTests {
     void testGetFantasticGradle() throws Exception {
         FantasticGradle expected = EASY_RANDOM.nextObject(FantasticGradle.class);
 
-        Mockito.when(repository.get(expected.getFantasticGradleId())).thenReturn(Optional.of(expected));
+        Mockito.when(repository.findById(expected.getFantasticGradleId())).thenReturn(Optional.of(expected));
 
         mockMvc.perform(get(GET_PUT_API, expected.getFantasticGradleId())
                 .contentType(MediaType.APPLICATION_JSON))
@@ -95,7 +95,7 @@ class FantasticGradleControllerTests {
     void testGetFantasticGradleNotFound() throws Exception {
         FantasticGradle expected = EASY_RANDOM.nextObject(FantasticGradle.class);
 
-        Mockito.when(repository.get(expected.getFantasticGradleId())).thenReturn(Optional.empty());
+        Mockito.when(repository.findById(expected.getFantasticGradleId())).thenReturn(Optional.empty());
 
         mockMvc.perform(get(GET_PUT_API, expected.getFantasticGradleId())
                 .contentType(MediaType.APPLICATION_JSON))
@@ -113,7 +113,7 @@ class FantasticGradleControllerTests {
                 EASY_RANDOM.nextObject(FantasticGradle.class)
         );
 
-        Mockito.when(repository.getAll()).thenReturn(expected);
+        Mockito.when(repository.findAll()).thenReturn(expected);
 
         mockMvc.perform(get(API + "/all")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -125,7 +125,7 @@ class FantasticGradleControllerTests {
     void testCreateFantasticGradle() throws Exception {
         FantasticGradle expected = EASY_RANDOM.nextObject(FantasticGradle.class);
 
-        Mockito.when(repository.save(expected)).thenReturn(expected.getFantasticGradleId());
+        Mockito.when(repository.save(expected)).thenReturn(expected);
 
         mockMvc.perform(post(API)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -140,7 +140,7 @@ class FantasticGradleControllerTests {
         FantasticGradle updated = EASY_RANDOM.nextObject(FantasticGradle.class);
         updated.setFantasticGradleId(modified.getFantasticGradleId());
 
-        Mockito.when(repository.get(modified.getFantasticGradleId())).thenReturn(Optional.of(updated));
+        Mockito.when(repository.findById(modified.getFantasticGradleId())).thenReturn(Optional.of(updated));
 
         // 1. Test that PUT operation invoked successfully
         mockMvc.perform(put(GET_PUT_API, modified.getFantasticGradleId())
