@@ -16,7 +16,6 @@
 
 package com.leonovich.fantasticgradle.repository;
 
-import com.leonovich.fantasticgradle.FantasticGradleApplication;
 import com.leonovich.fantasticgradle.model.FantasticGradle;
 import lombok.Getter;
 import lombok.extern.apachecommons.CommonsLog;
@@ -24,8 +23,6 @@ import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collection;
@@ -35,12 +32,10 @@ import java.util.UUID;
 @CommonsLog
 @Getter
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = FantasticGradleApplication.class)
 class InMemoryFantasticGradleRepositoryTests {
     private static final EasyRandom EASY_RANDOM = new EasyRandom();
 
-    @Autowired
-    private FantasticRepository<FantasticGradle, UUID> repository;
+    private FantasticRepository<FantasticGradle, UUID> repository = new InMemoryFantasticGradleRepository();
 
 
     @Test

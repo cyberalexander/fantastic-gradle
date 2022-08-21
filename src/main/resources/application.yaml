@@ -1,9 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/Aliaksandr_Leanovich
+    username: postgres
+    password: password
+  jpa:
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+  main:
+    banner-mode: off
+
 logging:
   level:
     root: INFO
     com.leonovich.fantasticgradle: DEBUG
     org.springframework: INFO
-
-spring:
-  jpa:
-    show-sql: true
