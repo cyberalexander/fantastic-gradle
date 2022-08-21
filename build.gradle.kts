@@ -108,7 +108,9 @@ dependencies {
 	testImplementation("io.projectreactor:reactor-test")
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	runtimeOnly("com.h2database:h2")
+	implementation("org.postgresql:postgresql")
+	testImplementation("org.postgresql:postgresql")
+	runtimeOnly("org.postgresql:postgresql")
 
 	compileOnly("org.projectlombok:lombok")
 	testCompileOnly("org.projectlombok:lombok")

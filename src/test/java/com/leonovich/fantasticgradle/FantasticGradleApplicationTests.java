@@ -15,13 +15,16 @@
  */
 package com.leonovich.fantasticgradle;
 
+import lombok.extern.apachecommons.CommonsLog;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+@CommonsLog
 @SpringBootTest
 class FantasticGradleApplicationTests {
 
     @Test
     void contextLoads() {
+        log.info("FantasticGradleApplicationTest passed!");
     }
 }
