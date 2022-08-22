@@ -14,22 +14,6 @@ jobs:
           #- windows-latest
     runs-on: ${{ matrix.os }}
 
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_DB: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
 
       - uses: actions/checkout@v2
@@ -38,6 +22,10 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: 'latest'  # See https://hub.docker.com/_/postgres for available versions
 
       - name: setup gradle
         uses: gradle/gradle-build-action@v2
