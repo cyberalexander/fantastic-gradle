@@ -18,9 +18,11 @@ package com.leonovich.fantasticgradle;
 import lombok.extern.apachecommons.CommonsLog;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @CommonsLog
 @SpringBootTest
+@ActiveProfiles("test")
 class FantasticGradleApplicationTests {
 
     @Test
