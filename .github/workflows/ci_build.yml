@@ -23,10 +23,6 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - uses: harmon758/postgresql-action@v1
-        with:
-          postgresql version: 'latest'  # See https://hub.docker.com/_/postgres for available versions
-
       - name: setup gradle
         uses: gradle/gradle-build-action@v2
 
