@@ -27,8 +27,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created : 24/08/2022 08:12
@@ -41,7 +45,7 @@ import java.util.UUID;
 @CommonsLog
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
-public class FantasticGradleCrudRepositoryTests {
+class FantasticGradleCrudRepositoryTests {
     private static final EasyRandom EASY_RANDOM = new EasyRandom();
 
     @Autowired
@@ -51,6 +55,34 @@ public class FantasticGradleCrudRepositoryTests {
     void testFindById() {
         log.info(String.format("repo : %s", fantasticGradleCrudRepository));
         FantasticGradle given = EASY_RANDOM.nextObject(FantasticGradle.class);
+        FantasticGradle saved = fantasticGradleCrudRepository.save(given);
+
+        Optional<FantasticGradle> queried = fantasticGradleCrudRepository.findById(saved.getFantasticGradleId());
+
+        Assertions.assertTrue(queried.isPresent());
+        Assertions.assertEquals(saved, queried.get());
+    }
+
+    @Test
+    void testFindAll() {
+        log.info(String.format("repo : %s", fantasticGradleCrudRepository));
+        List<FantasticGradle> saved = Stream.generate(() -> EASY_RANDOM.nextObject(FantasticGradle.class))
+                .limit(3)
+                .map(item -> fantasticGradleCrudRepository.save(item))
+                .collect(Collectors.toList());
+
+        List<FantasticGradle> queried = new ArrayList<>();
+        fantasticGradleCrudRepository.findAll().forEach(queried::add);
+
+        Assertions.assertTrue(queried.contains(saved.get(0)));
+        Assertions.assertTrue(queried.contains(saved.get(1)));
+        Assertions.assertTrue(queried.contains(saved.get(2)));
+    }
+
+    @Test
+    void testSave() {
+        log.info(String.format("repo : %s", fantasticGradleCrudRepository));
+        FantasticGradle given = FantasticGradle.builder().name("fantastic_name").build();
         FantasticGradle saved = fantasticGradleCrudRepository.save(given);
 
         Optional<FantasticGradle> queried = fantasticGradleCrudRepository.findById(saved.getFantasticGradleId());
