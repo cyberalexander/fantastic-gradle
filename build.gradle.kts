@@ -117,6 +117,8 @@ dependencies {
 	// Added during development
 	compileOnly("javax.validation:validation-api")
 	implementation("org.mapstruct:mapstruct:1.5.2.Final")
+	implementation("io.springfox:springfox-swagger2:3.0.0")
+	implementation("io.springfox:springfox-swagger-ui:3.0.0")
 	/**
 	 * Actually it's kinda tool to be used in unit-tests to generate test-data. But I use it in application code.
 	 */
