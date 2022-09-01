@@ -17,3 +17,9 @@ logging:
     root: INFO
     com.leonovich.fantasticgradle: DEBUG
     org.springframework: INFO
+
+springdoc:
+#  api-docs:
+#    path: /api-docs # setup custom path for swagger api docs
+   swagger-ui:
+     operations-sorter: method
