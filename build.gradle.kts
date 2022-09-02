@@ -22,7 +22,8 @@ plugins {
 // Configurations section BEGIN ----------------------------------------------------------------------------------------
 group = "com.leonovich.fantasticgradle"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_11
+java.sourceCompatibility = JavaVersion.VERSION_17
+val fantasticGradleVersion: String by project
 
 configurations {
 	compileOnly {
@@ -118,6 +119,7 @@ dependencies {
 	compileOnly("javax.validation:validation-api")
 	implementation("org.mapstruct:mapstruct:1.5.2.Final")
 	implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
+	implementation("org.hibernate:hibernate-validator:7.0.1.Final")
 	/**
 	 * Actually it's kinda tool to be used in unit-tests to generate test-data. But I use it in application code.
 	 */
@@ -187,7 +189,7 @@ tasks.register("hello") {
 	description = "Says 'Hello World!' as the result of invocation. As well it's accessing and printing custom project property."
 	dependsOn("build")
 	doLast {
-		println("fantastic_gradle_version: ${project.property("fantastic_gradle_version")}")
+		println("fantasticGradleVersion: $fantasticGradleVersion")
 		println("Hello World!")
 	}
 }

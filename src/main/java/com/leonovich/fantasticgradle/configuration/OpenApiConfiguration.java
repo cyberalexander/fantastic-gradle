@@ -16,10 +16,13 @@
 
 package com.leonovich.fantasticgradle.configuration;
 
+import com.leonovich.fantasticgradle.configuration.properties.ApplicationProperties;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import lombok.AllArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,15 +36,19 @@ import org.springframework.context.annotation.Configuration;
  * @author Aliaksandr_Leanovich
  * @version 1.0
  */
+@AllArgsConstructor
 @Configuration
+@EnableConfigurationProperties(ApplicationProperties.class)
 public class OpenApiConfiguration {
+
+    private final ApplicationProperties applicationProperties;
 
     @Bean
     public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("Fantastic Gradle API")
+                .info(new Info().title(applicationProperties.name())
                         .description("Fantastic gradle Open API Documentation")
-                        .version("v0.0.1")
+                        .version(applicationProperties.fantasticGradleVersion())
                         .license(new License().name("Apache License 2.0").url("http://springdoc.org"))
                         .description("SpringShop Wiki Documentation")
                         .contact(
