@@ -20,10 +20,11 @@ plugins {
 // Plugins section END -------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
 // Configurations section BEGIN ----------------------------------------------------------------------------------------
-group = "com.leonovich.fantasticgradle"
-version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
 val fantasticGradleVersion: String by project
+
+group = "com.leonovich.fantasticgradle"
+version = fantasticGradleVersion
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 configurations {
 	compileOnly {
@@ -170,6 +171,17 @@ tasks.withType<Test> {
 	}
 }
 
+tasks.withType<ProcessResources> {
+	println("processResources: started!")
+	filesMatching("/**/application.yaml") {
+		println("processResources: matching file found!")
+		val filterTokens = mapOf(Pair("version", project.version), Pair("fantasticGradleVersion", fantasticGradleVersion))
+		filter<org.apache.tools.ant.filters.ReplaceTokens>("tokens" to filterTokens)
+	}
+	println("processResources: completed!")
+}
+tasks.getByName("compileJava").dependsOn("processResources")
+
 tasks.jar {
 	manifest {
 		attributes(
@@ -189,6 +201,7 @@ tasks.register("hello") {
 	description = "Says 'Hello World!' as the result of invocation. As well it's accessing and printing custom project property."
 	dependsOn("build")
 	doLast {
+		println("version: $version")
 		println("fantasticGradleVersion: $fantasticGradleVersion")
 		println("Hello World!")
 	}

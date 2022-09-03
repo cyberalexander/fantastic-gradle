@@ -12,9 +12,9 @@ spring:
   main:
     banner-mode: console
   application:
-    name: Fantastic Gradle API
-    version: 0.0.1-SNAPSHOT
-    fantastic-gradle-version: 1.0.0-SNAPSHOT
+    name: fantastic-gradle-srv
+    version: @version@
+    fantastic-gradle-version: @fantasticGradleVersion@
 
 logging:
   level:
