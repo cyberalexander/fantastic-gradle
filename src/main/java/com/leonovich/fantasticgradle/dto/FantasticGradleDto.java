@@ -18,6 +18,9 @@ package com.leonovich.fantasticgradle.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,7 +30,10 @@ public class FantasticGradleDto {
 
     private UUID fantasticGradleId;
 
+    @NotBlank
+    @Size(min = 3, max = 55)
     private String name;
 
+    @NotNull
     private LocalDateTime createdWhen;
 }

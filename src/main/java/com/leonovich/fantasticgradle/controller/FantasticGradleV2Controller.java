@@ -19,6 +19,7 @@ import com.leonovich.fantasticgradle.dto.FantasticGradleDto;
 import com.leonovich.fantasticgradle.mapper.FantasticGradleMapper;
 import com.leonovich.fantasticgradle.model.FantasticGradle;
 import com.leonovich.fantasticgradle.repository.FantasticRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,11 @@ public class FantasticGradleV2Controller {
      * @param fantasticGradleId The unique identifier of fantastic gradle
      * @return The instance of {@link FantasticGradleDto} associated with given {@param fantasticGradleId}
      */
+    @Operation(
+            summary = "Operation dedicated to provide the ability to retrieve " +
+                    "FantasticGradle details by unique Identifier",
+            description = "Allows not authorised access"
+    )
     @GetMapping(path = "{fantasticGradleId}")
     public FantasticGradleDto getFantasticGradle(@PathVariable UUID fantasticGradleId) {
         Optional<FantasticGradle> fantasticGradle = repository.get(fantasticGradleId);
