@@ -15,6 +15,7 @@
  */
 package com.leonovich.fantasticgradle.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
@@ -26,14 +27,28 @@ import java.util.UUID;
 
 @Data
 @Builder
+@Schema(description = "Fantastic Gradle details")
 public class FantasticGradleDto {
 
+    @NotBlank
+    @Size(max = 36)
+    @Schema(
+            description = "Unique Fantastic Gradle identifier", required = true,
+            example = "4fcfc816-2f2f-420a-b159-4150366e489c"
+    )
     private UUID fantasticGradleId;
 
     @NotBlank
     @Size(min = 3, max = 55)
+    @Schema(
+            description = "The name of the Fantastic Gradle", required = true,
+            example = "Gradle Fantastico"
+    )
     private String name;
 
     @NotNull
+    @Schema(
+            description = "The date and time, when given Fantastic Gradle was created", required = true
+    )
     private LocalDateTime createdWhen;
 }

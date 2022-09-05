@@ -20,6 +20,11 @@ import com.leonovich.fantasticgradle.mapper.FantasticGradleMapper;
 import com.leonovich.fantasticgradle.model.FantasticGradle;
 import com.leonovich.fantasticgradle.repository.FantasticRepository;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,8 +58,36 @@ public class FantasticGradleV2Controller {
                     "FantasticGradle details by unique Identifier",
             description = "Allows not authorised access"
     )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "OK",
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            schema = @Schema(implementation = FantasticGradleDto.class)
+                                    )
+                            }
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad request",
+                            content = @Content
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Not found",
+                            content = @Content
+                    )
+            }
+    )
     @GetMapping(path = "{fantasticGradleId}")
-    public FantasticGradleDto getFantasticGradle(@PathVariable UUID fantasticGradleId) {
+    public FantasticGradleDto getFantasticGradle(
+            @Parameter(description = "The unique identifier of FantasticGradle object")
+            @PathVariable
+            UUID fantasticGradleId
+    ) {
         Optional<FantasticGradle> fantasticGradle = repository.get(fantasticGradleId);
         return fantasticGradle
                 .map(result -> {
