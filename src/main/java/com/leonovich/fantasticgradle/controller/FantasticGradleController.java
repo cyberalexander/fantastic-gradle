@@ -18,6 +18,8 @@ package com.leonovich.fantasticgradle.controller;
 import com.leonovich.fantasticgradle.dto.FantasticGradleDto;
 import com.leonovich.fantasticgradle.mapper.FantasticGradleMapper;
 import com.leonovich.fantasticgradle.model.FantasticGradle;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.data.repository.CrudRepository;
@@ -37,6 +39,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.leonovich.fantasticgradle.configuration.OpenApiConfiguration.DefaultResponseSchemaTemplate;
 
 /**
  * The controller is aimed to manage {@link FantasticGradleDto} entity.
@@ -59,6 +63,9 @@ public class FantasticGradleController {
      * @param fantasticGradleId The unique identifier of fantastic gradle
      * @return The instance of {@link FantasticGradleDto} associated with given {@param fantasticGradleId}
      */
+    @DefaultResponseSchemaTemplate(
+            @Content(schema = @Schema(implementation = FantasticGradleDto.class))
+    )
     @GetMapping(path = "{fantasticGradleId}")
     public FantasticGradleDto getFantasticGradle(@PathVariable @NotBlank UUID fantasticGradleId) {
         log.info(String.format("GET /api/v1/fantastic/%s API invoked.", fantasticGradleId));
