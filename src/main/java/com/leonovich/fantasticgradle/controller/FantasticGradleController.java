@@ -18,6 +18,7 @@ package com.leonovich.fantasticgradle.controller;
 import com.leonovich.fantasticgradle.dto.FantasticGradleDto;
 import com.leonovich.fantasticgradle.mapper.FantasticGradleMapper;
 import com.leonovich.fantasticgradle.model.FantasticGradle;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -38,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static com.leonovich.fantasticgradle.configuration.OpenApiConfiguration.DefaultResponseSchemaTemplate;
 
@@ -63,25 +63,30 @@ public class FantasticGradleController {
      * @param fantasticGradleId The unique identifier of fantastic gradle
      * @return The instance of {@link FantasticGradleDto} associated with given {@param fantasticGradleId}
      */
-    @DefaultResponseSchemaTemplate(
-            @Content(schema = @Schema(implementation = FantasticGradleDto.class))
-    )
     @GetMapping(path = "{fantasticGradleId}")
+    @DefaultResponseSchemaTemplate(@Content(schema = @Schema(implementation = FantasticGradleDto.class)))
     public FantasticGradleDto getFantasticGradle(@PathVariable @NotBlank UUID fantasticGradleId) {
         log.info(String.format("GET /api/v1/fantastic/%s API invoked.", fantasticGradleId));
         Optional<FantasticGradle> fantasticGradle = repository.findById(fantasticGradleId);
         return fantasticGradle.map(result -> mapper.modelToDto(result)).orElse(null);
     }
 
+    @DefaultResponseSchemaTemplate(
+            @Content(
+                    mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = FantasticGradleDto.class))
+            )
+    )
     @GetMapping(path = "/all")
     public List<FantasticGradleDto> getAllFantasticGradles() {
         List<FantasticGradle> items = new ArrayList<>();
         repository.findAll().forEach(items::add);
-        return items.stream().map(item -> mapper.modelToDto(item)).collect(Collectors.toList());
+        return items.stream().map(item -> mapper.modelToDto(item)).toList();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @DefaultResponseSchemaTemplate(@Content(schema = @Schema(implementation = UUID.class)))
     public UUID createFantasticGradle(@RequestBody FantasticGradleDto request) {
         log.info(String.format("POST /api/v1/fantastic API invoked with params : %s", request));
         FantasticGradle saved = repository.save(mapper.dtoToModel(request));
@@ -98,10 +103,4 @@ public class FantasticGradleController {
             repository.save(queried);
         });
     }
-
-
-    //TODO #1 : Continue working on FantasticGradleController extension
-    //TODO #3 : Implement logging
-    //TODO #4 : Implement swagger
-    //TODO #5 : Configure lombok annotations
 }
