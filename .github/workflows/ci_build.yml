@@ -1,4 +1,4 @@
-name: Run Gradle on PRs
+name: Run Gradle on Pull Requests
 'on':
   pull_request:
     branches: [ develop ]
